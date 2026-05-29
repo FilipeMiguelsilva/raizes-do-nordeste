@@ -18,14 +18,15 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final ItensPedidoService itensPedidoService;
     private final FidelizacaoService fidelizacaoService;
+    private final EstoqueService estoqueService;
 
     public PedidoService(PagamentoService pagamentoService, PedidoRepository pedidoRepository,
-                         ItensPedidoService itensPedidoService, FidelizacaoService fidelizacaoService) {
+                         ItensPedidoService itensPedidoService, FidelizacaoService fidelizacaoService, EstoqueService estoqueService) {
         this.pagamentoService = pagamentoService;
         this.pedidoRepository = pedidoRepository;
         this.itensPedidoService = itensPedidoService;
         this.fidelizacaoService = fidelizacaoService;
-
+        this.estoqueService = estoqueService;
     }
 
     public Pedido cadastrarPedido(Pedido pedido, Pagamento pagamento, List<ItensPedido> itens){
@@ -37,9 +38,18 @@ public class PedidoService {
         pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
         Pedido pedidoCadastrado = pedidoRepository.save(pedido);
 
+        Long unidadeId = pedidoCadastrado.getUnidade().getId();
         BigDecimal total = BigDecimal.ZERO;
+
         for (ItensPedido item : itens) {
             item.setPedido(pedidoCadastrado);
+
+            Long produtoId = item.getCardapio().getProduto().getId();
+
+            estoqueService.verificarDisponibilidade(
+                    unidadeId,
+                    produtoId,
+                    item.getQuantidade());
             itensPedidoService.adicionar(item);
             total = total.add(item.getPrecoUnitario().multiply(BigDecimal.valueOf(item.getQuantidade())));
         }
@@ -87,8 +97,23 @@ public class PedidoService {
 
     public Pedido aprovarPedido(Long pedidoId) {
         Pedido pedido = buscarPorId(pedidoId);
+        Long unidadeId = pedido.getUnidade().getId();
+        List<ItensPedido> itens = itensPedidoService.buscarPorPedidoId(pedido.getId());
+
+        for (ItensPedido item : itens) {
+
+            Long produtoId = item.getCardapio().getProduto().getId();
+
+            estoqueService.removerPorUnidadeEProduto(
+                    unidadeId,
+                    produtoId,
+                    item.getQuantidade()
+            );
+        }
+
         pagamentoService.aprovarPagamento(pedidoId);
         pedido.setStatus(StatusPedido.EM_PREPARO);
+
         return pedidoRepository.save(pedido);
     }
 

@@ -43,22 +43,28 @@ public class EstoqueService {
         return estoqueRepository.save(estoque);
     }
 
-    public Estoque removerQuantidade(Long id, int quantidade){
-        Estoque estoque = buscarPorId(id);
-        if (estoque.getQuantidade()< quantidade){
+    public Estoque removerPorUnidadeEProduto(Long unidadeId, Long produtoId, Integer quantidade) {
+
+        Estoque estoque = buscarPorUnidadeEProduto(unidadeId, produtoId);
+
+        if (estoque.getQuantidade() < quantidade) {
             throw new RuntimeException("Estoque insuficiente");
         }
+
         estoque.setQuantidade(estoque.getQuantidade() - quantidade);
 
         return estoqueRepository.save(estoque);
     }
 
-    public boolean verificarDisponibilidade(Long unidadeId, Long produtoId, Integer quantidade) {
+    public void verificarDisponibilidade(Long unidadeId, Long produtoId, Integer quantidade) {
         Estoque estoque = estoqueRepository
                 .findByUnidadeIdAndProdutoId(unidadeId, produtoId)
                 .orElseThrow(() -> new RuntimeException("Estoque não encontrado"));
 
-        return estoque.getQuantidade() >= quantidade;
+        if (estoque.getQuantidade() < quantidade) {
+            throw new RuntimeException("Estoque insuficiente");
+        }
+
     }
 
     public List<Estoque> listarTodos() {
