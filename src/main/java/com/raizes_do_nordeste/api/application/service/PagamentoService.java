@@ -35,7 +35,7 @@ public class PagamentoService {
     public Pagamento aprovarPagamento(Long pedidoId){
 
         Pagamento pagamento = pagamentoRepository.findByPedidoId(pedidoId)
-                .orElseThrow(() -> new RuntimeException("Pagamento não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
         pagamento.setData(LocalDateTime.now());
         pagamento.setStatusPagamento(StatusPagamento.APROVADO);
 

@@ -95,7 +95,9 @@ public class PedidoService {
         return pedidoRepository.findAll();
     }
 
-    public Pedido aprovarPedido(Long pedidoId) {
+    //processa o pagamento aprovado, atualizando status do pedido e baixa no estoque
+    public Pedido processarPagamentoAprovado(Long pedidoId) {
+
         Pedido pedido = buscarPorId(pedidoId);
         Long unidadeId = pedido.getUnidade().getId();
         List<ItensPedido> itens = itensPedidoService.buscarPorPedidoId(pedido.getId());
@@ -110,8 +112,6 @@ public class PedidoService {
                     item.getQuantidade()
             );
         }
-
-        pagamentoService.aprovarPagamento(pedidoId);
         pedido.setStatus(StatusPedido.EM_PREPARO);
 
         return pedidoRepository.save(pedido);

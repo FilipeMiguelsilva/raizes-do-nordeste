@@ -9,21 +9,21 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 
+//classe que cria e le o token
 @Service
 public class JwtService {
 
-    // chave secreta para assinar o token
     private static final String SECRET = "raizes-do-nordeste-chave-secreta-2026";
-    private static final long EXPIRACAO = 86400000; // 24 horas em ms
+    private static final long EXPIRACAO = 86400000;
 
     private Key getChave() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
-    // gera o token email do usuario
-    public String gerarToken(String email) {
+    public String gerarToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRACAO))
                 .signWith(getChave(), SignatureAlgorithm.HS256)
@@ -34,7 +34,10 @@ public class JwtService {
         return getClaims(token).getSubject();
     }
 
-    // valida se o token é válido
+    public String extrairRole(String token) {
+        return getClaims(token).get("role", String.class);
+    }
+
     public boolean validarToken(String token) {
         try {
             getClaims(token);
