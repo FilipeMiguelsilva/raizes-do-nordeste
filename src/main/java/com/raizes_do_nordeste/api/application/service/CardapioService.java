@@ -52,5 +52,9 @@ public class CardapioService {
         return cardapioRepository.save(cardapio);
     }
 
+    public List<Cardapio> listarTodos() {
+        return cardapioRepository.findAll();
+    }
+
 }
 

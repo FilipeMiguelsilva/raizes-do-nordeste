@@ -20,6 +20,8 @@ public class FidelizacaoService {
         if (!fidelizacao.getConsentLGPD()) {
             throw new RuntimeException("Usuário não aceitou os termos LGPD");
         }
+
+
         return fidelizacaoRepository.save(fidelizacao);
 
     }

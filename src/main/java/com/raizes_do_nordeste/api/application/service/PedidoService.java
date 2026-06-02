@@ -29,38 +29,49 @@ public class PedidoService {
         this.estoqueService = estoqueService;
     }
 
-    public Pedido cadastrarPedido(Pedido pedido, Pagamento pagamento, List<ItensPedido> itens){
+    public Pedido cadastrarPedido(Pedido pedido, Pagamento pagamento, List<ItensPedido> itens) {
 
-        if (pedido.getCanalPedido() == null){
+        if (pedido.getCanalPedido() == null) {
             throw new RuntimeException("Canal do pedido obrigatório");
         }
 
         pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
-        Pedido pedidoCadastrado = pedidoRepository.save(pedido);
 
-        Long unidadeId = pedidoCadastrado.getUnidade().getId();
+        Long unidadeId = pedido.getUnidade().getId();
         BigDecimal total = BigDecimal.ZERO;
 
+        //valida tudo primeiro
         for (ItensPedido item : itens) {
-            item.setPedido(pedidoCadastrado);
 
             Long produtoId = item.getCardapio().getProduto().getId();
 
             estoqueService.verificarDisponibilidade(
                     unidadeId,
                     produtoId,
-                    item.getQuantidade());
-            itensPedidoService.adicionar(item);
-            total = total.add(item.getPrecoUnitario().multiply(BigDecimal.valueOf(item.getQuantidade())));
+                    item.getQuantidade()
+            );
+
+            total = total.add(
+                    item.getPrecoUnitario()
+                            .multiply(BigDecimal.valueOf(item.getQuantidade()))
+            );
         }
 
-        pedidoCadastrado.setTotal(total);
-        pedidoRepository.save(pedidoCadastrado);
+        //salva o pedido
+        pedido.setTotal(total);
+        Pedido pedidoSalvo = pedidoRepository.save(pedido);
 
-        pagamento.setPedido(pedidoCadastrado);
+        //salva itens
+        for (ItensPedido item : itens) {
+            item.setPedido(pedidoSalvo);
+            itensPedidoService.adicionar(item);
+        }
+
+        //pagamento
+        pagamento.setPedido(pedidoSalvo);
         pagamentoService.cadastrar(pagamento);
 
-        return pedidoCadastrado;
+        return pedidoSalvo;
     }
 
     private Pedido buscarPorId(Long id) {
@@ -74,10 +85,10 @@ public class PedidoService {
         Pedido pedido = buscarPorId(pedidoId);
         pedido.setStatus(novoStatus);
 
-        if (novoStatus == StatusPedido.ENTREGUE) {
-            fidelizacaoService.adicionarPontos(
-                    pedido.getUsuario().getId(), 10);
-        }
+        //if (novoStatus == StatusPedido.ENTREGUE) {
+           // fidelizacaoService.adicionarPontos(
+                //    pedido.getUsuario().getId(), 10);
+       // }
         return pedidoRepository.save(pedido);
     }
 
@@ -104,7 +115,9 @@ public class PedidoService {
 
         for (ItensPedido item : itens) {
 
-            Long produtoId = item.getCardapio().getProduto().getId();
+            Long produtoId = item.getCardapio().getProduto() != null
+                    ? item.getCardapio().getProduto().getId()
+                    : null;
 
             estoqueService.removerPorUnidadeEProduto(
                     unidadeId,
