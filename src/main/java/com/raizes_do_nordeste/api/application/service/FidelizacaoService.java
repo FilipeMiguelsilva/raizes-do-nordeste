@@ -3,6 +3,7 @@ package com.raizes_do_nordeste.api.application.service;
 import com.raizes_do_nordeste.api.domain.entity.Fidelizacao;
 import com.raizes_do_nordeste.api.infrastructure.repository.FidelizacaoRepository;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,6 +22,9 @@ public class FidelizacaoService {
             throw new RuntimeException("Usuário não aceitou os termos LGPD");
         }
 
+        fidelizacao.setPontos(0);
+        fidelizacao.setData(LocalDateTime.now());
+
 
         return fidelizacaoRepository.save(fidelizacao);
 
@@ -36,12 +40,19 @@ public class FidelizacaoService {
                 .orElseThrow(() -> new RuntimeException("id não encontrado"));
     }
 
-    public Fidelizacao adicionarPontos(Long id, int pontos){
+    //adiciona os ponstos caso encontre o usuario cadastrado em fidelizacao
+    public void  adicionarPontos(Long id, int pontos){
 
-        Fidelizacao fidelizacao = buscarUsuarioId(id);
-        fidelizacao.setPontos(fidelizacao.getPontos()+pontos);
+        fidelizacaoRepository.findByUsuarioId(id)
+                .ifPresent(fidelizacao -> {
 
-        return fidelizacaoRepository.save(fidelizacao);
+                    fidelizacao.setPontos(
+                            fidelizacao.getPontos() + pontos
+                    );
+
+                    fidelizacaoRepository.save(fidelizacao);
+                });
+
     }
 
     public Fidelizacao resgatarPontos(Long id, int pontos ) {

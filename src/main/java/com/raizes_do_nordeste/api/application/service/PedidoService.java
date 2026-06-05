@@ -85,10 +85,10 @@ public class PedidoService {
         Pedido pedido = buscarPorId(pedidoId);
         pedido.setStatus(novoStatus);
 
-        //if (novoStatus == StatusPedido.ENTREGUE) {
-           // fidelizacaoService.adicionarPontos(
-                //    pedido.getUsuario().getId(), 10);
-       // }
+        if (novoStatus == StatusPedido.ENTREGUE) {
+           fidelizacaoService.adicionarPontos(
+                   pedido.getUsuario().getId(), 10);
+        }
         return pedidoRepository.save(pedido);
     }
 
