@@ -28,6 +28,18 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setStatus(403);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\": \"ACESSO_NEGADO\", \"message\": \"Sem permissao para acessar este recurso.\"}");
+                        })
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(401);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\": \"NAO_AUTENTICADO\", \"message\": \"Token ausente ou invalido.\"}");
+                        })
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
