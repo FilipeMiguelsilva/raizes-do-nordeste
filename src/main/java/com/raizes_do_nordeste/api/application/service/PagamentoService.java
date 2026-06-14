@@ -36,6 +36,12 @@ public class PagamentoService {
 
         Pagamento pagamento = pagamentoRepository.findByPedidoId(pedidoId)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+
+        if (pagamento.getStatusPagamento() == StatusPagamento.APROVADO) {
+            throw new RuntimeException("Pagamento já foi aprovado");
+        }
+
         pagamento.setData(LocalDateTime.now());
         pagamento.setStatusPagamento(StatusPagamento.APROVADO);
 
