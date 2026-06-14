@@ -85,6 +85,9 @@ public class PedidoService {
         Pedido pedido = buscarPorId(pedidoId);
         pedido.setStatus(novoStatus);
 
+        if (pedido.getStatus() == StatusPedido.ENTREGUE) {
+            throw new RuntimeException("Pedido já foi entregue");
+        }
         if (novoStatus == StatusPedido.ENTREGUE) {
            fidelizacaoService.adicionarPontos(
                    pedido.getUsuario().getId(), 10);
