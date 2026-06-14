@@ -1,0 +1,383 @@
+{
+	"info": {
+		"_postman_id": "8819d4e2-c389-4d47-a423-045f0cf02435",
+		"name": "Raizes do Nordeste API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49125502"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "T01 - Login Valido",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@email.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "T02 - Login Invalido",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@email.com\",\n  \"senha\": \"senhaErrada\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pedidos",
+			"item": [
+				{
+					"name": "T03 - Criar pedido válido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODE0NjEyNTAsImV4cCI6MTc4MTU0NzY1MH0.9JlBisYb3YHKATuGl902pEoWBNwUB3BXraHkBuwcrHQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"usuarioId\": 6,\n  \"unidadeId\": 1,\n  \"canalPedido\": \"APP\",\n  \"formaPagamento\": \"MOCK\",\n  \"itens\": [\n    {\n      \"cardapioId\": 1,\n      \"quantidade\": 1,\n      \"precoUnitario\": 10.00\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "T04 - Aprovar pagamento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODE0NjE2NDcsImV4cCI6MTc4MTU0ODA0N30.4lSWk7-RRVu_GrFqczhlT5-JRzdrdgNJLb_6yMDazLA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pedidos/20/pagamento/aprovar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos",
+								"20",
+								"pagamento",
+								"aprovar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "T05 - Entregar Pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODE0NjE4MTQsImV4cCI6MTc4MTU0ODIxNH0.xSeWkJn5rlwW7m_BG7XKdTdLd0Y7t-qt3eELlbjAuPk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pedidos/20/status?novoStatus=ENTREGUE",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos",
+								"20",
+								"status"
+							],
+							"query": [
+								{
+									"key": "novoStatus",
+									"value": "ENTREGUE"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fidelização",
+			"item": [
+				{
+					"name": "T06 - Cadastrar Fidelização",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODE0NjE5ODAsImV4cCI6MTc4MTU0ODM4MH0.n8fRhpXiZdloKFcd4e9rvDP3UL8Pw0FxiCncC6c-H28",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"usuario\": {\n    \"id\": 6\n  },\n  \"consentLGPD\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/fidelizacao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"fidelizacao"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Erros",
+			"item": [
+				{
+					"name": "T07 - Acesso sem Token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "T08 - Estoque Insuficiente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODE0NjM3MjgsImV4cCI6MTc4MTU1MDEyOH0.6FydwmOdLwtT5l-mdjd-AODchgaaUzL6YLDLsaVqDIA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"usuarioId\": 6,\n  \"unidadeId\": 1,\n  \"canalPedido\": \"APP\",\n  \"formaPagamento\": \"MOCK\",\n  \"itens\": [\n    {\n      \"cardapioId\": 1,\n      \"quantidade\": 999,\n      \"precoUnitario\": 10.00\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "T09 - Unidade inexistente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODE0NjM4OTIsImV4cCI6MTc4MTU1MDI5Mn0.t1A1SrTpNWU0yd4WwTAmWgNReC0Zwj74q44ulti9KpY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"usuarioId\": 6,\n  \"unidadeId\": 2,\n  \"canalPedido\": \"APP\",\n  \"formaPagamento\": \"MOCK\",\n  \"itens\": [\n    {\n      \"cardapioId\": 1,\n      \"quantidade\": 999,\n      \"precoUnitario\": 10.00\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "T10 - Atualizar Status token cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInJvbGUiOiJDTElFTlRFIiwiaWF0IjoxNzgxNDY0MzE2LCJleHAiOjE3ODE1NTA3MTZ9.2Gu_uii2NUNgpiZFEUROfkeMVZ1HNzgRS-bZod4JQqw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"cliente@email.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pedidos/20/status?novoStatus=ENTREGUE",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos",
+								"20",
+								"status"
+							],
+							"query": [
+								{
+									"key": "novoStatus",
+									"value": "ENTREGUE"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

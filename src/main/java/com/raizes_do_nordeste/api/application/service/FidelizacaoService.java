@@ -23,6 +23,7 @@ public class FidelizacaoService {
         }
 
         fidelizacao.setPontos(0);
+        fidelizacao.setUtilizar(false);
         fidelizacao.setData(LocalDateTime.now());
 
 
