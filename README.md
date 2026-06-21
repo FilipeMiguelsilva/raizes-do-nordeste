@@ -13,6 +13,9 @@ da rede de lanchonetes Raízes do Nordeste.
 ### 1. Clone o repositório
 git clone https://github.com/FilipeMiguelsilva/raizes-do-nordeste.git
 
+## Instalando dependências
+./mvnw install
+
 ### 2. Crie o banco de dados
 mysql -u root -p
 CREATE DATABASE raizes_do_nordeste;
@@ -61,3 +64,28 @@ CLIENTE:
 
 ## Repositório
 https://github.com/FilipeMiguelsilva/raizes-do-nordeste
+
+## Como usar a API
+
+### 1. Faça login para obter o token
+POST http://localhost:8080/auth/login
+{
+"email": "admin@email.com",
+"senha": "123456"
+}
+
+### 2. Copie o accessToken da resposta
+{
+"accessToken": "eyJhbGci...",
+"tokenType": "Bearer"
+}
+
+### 3. Use o token nas requisições protegidas
+No Postman:
+- Clique em Authorization
+- Type: Bearer Token
+- Token: cole o accessToken aqui
+
+Todas as rotas exceto /auth/login e /usuarios
+requerem o token no header:
+Authorization: Bearer {seu_token}
