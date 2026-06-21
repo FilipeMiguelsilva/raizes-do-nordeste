@@ -89,3 +89,15 @@ No Postman:
 Todas as rotas exceto /auth/login e /usuarios
 requerem o token no header:
 Authorization: Bearer {seu_token}
+
+## Atenção — Tokens JWT
+Os tokens JWT expiram em 24 horas.
+Caso os testes retornem 401:
+
+1. Execute T01 - Login Válido
+2. Copie o accessToken da resposta
+3. Cole o token em cada requisição:
+  - Clique na requisição
+  - Aba Authorization
+  - Type: Bearer Token
+  - Cole o token
