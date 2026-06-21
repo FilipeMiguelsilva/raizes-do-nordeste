@@ -412,7 +412,7 @@
 							"port": "8080",
 							"path": [
 								"pedidos",
-								"20",
+								"1",
 								"status"
 							],
 							"query": [
