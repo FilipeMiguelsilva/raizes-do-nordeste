@@ -140,7 +140,7 @@
 							"port": "8080",
 							"path": [
 								"pedidos",
-								"1",
+								"20",
 								"pagamento",
 								"aprovar"
 							]
@@ -172,7 +172,7 @@
 							"port": "8080",
 							"path": [
 								"pedidos",
-								"1",
+								"20",
 								"status"
 							],
 							"query": [
@@ -186,7 +186,7 @@
 					"response": []
 				},
 				{
-					"name": "T11 - Listar pedido por canal",
+					"name": "T06 - Listar pedido por canal",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -239,7 +239,7 @@
 			"name": "Fidelização",
 			"item": [
 				{
-					"name": "T06 - Cadastrar Fidelização",
+					"name": "T07 - Cadastrar Fidelização",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -282,7 +282,7 @@
 			"name": "Erros",
 			"item": [
 				{
-					"name": "T07 - Acesso sem Token",
+					"name": "T08 - Acesso sem Token",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -304,7 +304,7 @@
 					"response": []
 				},
 				{
-					"name": "T08 - Estoque Insuficiente",
+					"name": "T09 - Estoque Insuficiente",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -342,7 +342,7 @@
 					"response": []
 				},
 				{
-					"name": "T09 - Unidade inexistente",
+					"name": "T10 - Unidade inexistente",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -380,7 +380,7 @@
 					"response": []
 				},
 				{
-					"name": "T10 - Cliente sem permissão para atualizar pedido",
+					"name": "T11 - Cliente sem permissão para atualizar pedido",
 					"request": {
 						"auth": {
 							"type": "bearer",
