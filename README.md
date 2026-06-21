@@ -50,8 +50,12 @@ Execute nessa ordem:
 1. Auth → Login
 2. Usuarios → Cadastrar
 3. Pedidos → Criar pedido
-4. Pagamentos → Aprovar/Recusar
-5. Fidelização → Cadastrar
+4. Executar T03 — anota o ID retornado,
+   Atualiza T04 e T05 com esse ID
+5. Pagamentos → Aprovar/Recusar
+6. Fidelização → Cadastrar (obs: caso entregue o pedido antes de cadastrar na fidelização
+não somara pontos, para isso cadastre para somar os pontos. )
+7. Pedidos  → Entregar pedido
 
 ### 7. Credenciais de acesso
 ADMIN:
@@ -101,3 +105,4 @@ Caso os testes retornem 401:
   - Aba Authorization
   - Type: Bearer Token
   - Cole o token
+

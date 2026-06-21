@@ -140,7 +140,7 @@
 							"port": "8080",
 							"path": [
 								"pedidos",
-								"20",
+								"1",
 								"pagamento",
 								"aprovar"
 							]
@@ -172,13 +172,61 @@
 							"port": "8080",
 							"path": [
 								"pedidos",
-								"20",
+								"1",
 								"status"
 							],
 							"query": [
 								{
 									"key": "novoStatus",
 									"value": "ENTREGUE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "T11 - Listar pedido por canal",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwNTg2OTUsImV4cCI6MTc4MjE0NTA5NX0.6woZqWxTdffcDTopD1micngCwFF2y6PWkHez5316_7k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@email.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pedidos/canal?canalPedido=APP",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos",
+								"canal"
+							],
+							"query": [
+								{
+									"key": "canalPedido",
+									"value": "APP"
 								}
 							]
 						}
@@ -332,7 +380,7 @@
 					"response": []
 				},
 				{
-					"name": "T10 - Atualizar Status token cliente",
+					"name": "T10 - Cliente sem permissão para atualizar pedido",
 					"request": {
 						"auth": {
 							"type": "bearer",
